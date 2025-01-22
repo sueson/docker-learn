@@ -12,29 +12,39 @@ const router = express.Router();
 // Register a new user endpoint...
 router.post('/register', (req, res) => {
     const { username, password } = req.body;
-    
-    // Encrypt the password...
+
+    // Encrypt the password
     const hashedPassword = bcrypt.hashSync(password, 8);
-    
-    try {
-        // adding new user to the database...
-        const insertUser = db.prepare(`INSERT INTO users (username, password) VALUES (?, ?)`)
-        const result = insertUser.run(username, hashedPassword);
 
-        // now have the user, so have to add their first todo...
+    // Add a new user to the database
+    const insertUser = `INSERT INTO users (username, password) VALUES (?, ?)`;
+    db.run(insertUser, [username, hashedPassword], function (err) {
+        if (err) {
+            console.error("Error inserting user:", err.message);
+            return res.status(500).json({ message: "Failed to register user" });
+        }
+
+        // Retrieve the user ID (this.lastID provides the last inserted row ID)
+        const userId = this.lastID;
+        console.log("Retrieved user ID:", userId);
+
+        // Add the user's first default todo
         const defaultTodo = `Hello :) Add your first todo!`;
-        const insertTodo = db.prepare(`INSERT INTO todos (user_id, task) VALUES (?, ?)`)
-        insertTodo.run(result.lastInsertRowid, defaultTodo);
+        const insertTodo = `INSERT INTO todos (user_id, task) VALUES (?, ?)`;
+        db.run(insertTodo, [userId, defaultTodo], (err) => {
+            if (err) {
+                console.error("Error inserting todo:", err.message);
+                return res.status(500).json({ message: "Failed to create default todo" });
+            }
 
-        // create a token...
-        const token = jwt.sign({ id: result.lastInsertRowid }, process.env.JWT_SECRET, { expiresIn: '24h' });
+            // Create a JWT token for the new user
+            const token = jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
+            console.log("Token generated for user ID:", userId);
 
-        res.json({ token });
-    } catch (error) {
-        console.log(error.message);
-        res.sendStatus(500);
-    }
-})
+            res.json({ token });
+        });
+    });
+});
 
 // Login a existing user endpoint...
 router.post('/login', (req, res) => {
