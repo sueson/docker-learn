@@ -1,5 +1,5 @@
 {
-  "name": "todo-sqlite",
+  "name": "todo-app-docker",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
@@ -10,13 +10,15 @@
   "keywords": [],
   "author": "sueson",
   "license": "ISC",
-  "description": "A fullstack todo app, which used node.js as the backend, sqlite as database and JWT for authentication",
+  "description": "A dockerized fullstack todo app, which used node.js as the backend, postgreSQL as database, prisma ORM and JWT for authentication",
   "dependencies": {
+    "@prisma/client": "^6.2.1",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "sqlite3": "^5.1.7"
+    "pg": "^8.13.1",
+    "prisma": "^6.2.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"

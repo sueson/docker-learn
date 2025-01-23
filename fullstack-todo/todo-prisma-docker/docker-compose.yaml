@@ -1,0 +1,35 @@
+version: '3'
+services:
+  app:
+    build: .
+    container_name: todo-app
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/tododapp
+      - JWT_SECRET=your_json_secret_key
+      - NODE_ENV=development
+      - PORT=8010
+    ports:
+    # matching external port to internal port
+      - "8010:8010"
+    depends_on:
+      - db
+    # without volumes it always starts from scrach whenever reboot 
+    volumes:
+      - .:/app
+
+  db:
+  # for the database doesn't have a build file which is (Dockerfile)
+    image: postgres:13-alpine
+    container_name: postgres-db
+    environment: 
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: todoapp
+    ports:
+      - "5432:5432"
+    volumes: 
+      - postgres-data:/var/lib/postgresql/data
+
+# all changes of databse saved into the volumes
+volumes:
+  postgres-data:

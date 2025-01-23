@@ -1,0 +1,46 @@
+### Get/
+GET http://localhost:8000
+
+### Register /auth/register
+POST http://localhost:8010/auth/register
+Content-Type: application/json
+
+{
+    "username": "testaccount@gmail.com",
+    "password": "123456"
+}
+
+### Login /auth/login
+POST http://localhost:8010/auth/login
+Content-Type: application/json
+
+{
+    "username": "testaccount@gmail.com",
+    "password": "123456"
+}
+
+### Get all todos /todos
+GET http://localhost:8000/todos
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzM3NTcwMDc2LCJleHAiOjE3Mzc2NTY0NzZ9.1nS0h2tcFdvTEVUR9UU2Zrp6nJATazPh3aqAduUFbK8
+
+### Create a todo /todos
+POST http://localhost:8000/todos
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzM3NTcwMDc2LCJleHAiOjE3Mzc2NTY0NzZ9.1nS0h2tcFdvTEVUR9UU2Zrp6nJATazPh3aqAduUFbK8
+Content-Type: application/json
+
+{
+    "task": "Finish the project"
+}
+
+### Update a todo /todo/:id
+PUT http://localhost:8000/todos/2
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzM3NTcwMDc2LCJleHAiOjE3Mzc2NTY0NzZ9.1nS0h2tcFdvTEVUR9UU2Zrp6nJATazPh3aqAduUFbK8
+Content-Type: application/json
+
+{
+    "completed": 1
+}
+
+### Delete a todo /todo/:id
+DELETE  http://localhost:8000/todos/2
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzM3NTcwMDc2LCJleHAiOjE3Mzc2NTY0NzZ9.1nS0h2tcFdvTEVUR9UU2Zrp6nJATazPh3aqAduUFbK8
